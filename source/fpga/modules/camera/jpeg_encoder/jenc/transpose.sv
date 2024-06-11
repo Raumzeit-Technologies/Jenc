@@ -79,7 +79,7 @@ logic[1:0]      wr_cnt_x22;
 logic[2:0]      d_cnt_x22;
 
 parameter DSIZE = 6 + 2*QW;
-afifo #(.DSIZE(DSIZE), .ASIZE(3)) afifo(
+afifo #(.DSIZE(DSIZE), .ASIZE(2), .FULL_EMPTY_SAFEGUARD(0)) afifo(
     .i_wclk(clk),
     .i_wrst_n(resetn), 
     .i_wr(d_valid & ~full),
