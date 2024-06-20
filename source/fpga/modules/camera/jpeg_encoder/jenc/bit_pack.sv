@@ -50,7 +50,7 @@ always @(posedge clk)
 if (~(in32_hold & in32_valid))
     if (long_in) begin
         in32_nbits <= in_nbits - 32;
-        in32_data <= in_data << (64 - in_nbits);
+        in32_data <= in_data;
         in32_tlast <= in_tlast;
     end
     else if (in_valid)
@@ -108,6 +108,8 @@ always_comb begin
         next_tlast_cycle = ~out_tlast;
     else if (in32_valid)
         next_tlast_cycle = in32_tlast;
+    else
+        next_tlast_cycle = tlast_cycle;
 end
 
 always @(posedge clk)

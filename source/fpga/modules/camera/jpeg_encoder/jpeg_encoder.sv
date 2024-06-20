@@ -129,13 +129,13 @@ always_comb
 logic hold;
 always @(posedge pixel_clock_in)
 if (!(pixel_reset_n_in & jpeg_reset_n))
-    hold <= 0;
-else if (hold)
-    hold <= 0;
+    hold <= 1;
 else if (data_valid_out)
+    hold <= 0;
+else
     hold <= 1;
 
-always_comb data_valid_out = out_valid & ~hold;
+always_comb data_valid_out = out_valid & hold;
 always_comb out_hold = out_valid & hold;
 
 endmodule

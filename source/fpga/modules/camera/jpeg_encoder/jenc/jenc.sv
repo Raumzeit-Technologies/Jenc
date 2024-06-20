@@ -90,7 +90,6 @@ entropy entropy(
 );
 
 byte_pack byte_pack(
-    .codecoeff_valid        (codecoeff_valid & ~codecoeff_hold),
     .out_hold               (out_hold & out_valid),
     .*
 );
