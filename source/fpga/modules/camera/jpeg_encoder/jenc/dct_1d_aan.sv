@@ -12,7 +12,7 @@ module dct_1d_aan #(
     // Regular 1-D DCT adds +3 bits to coefficients, but 
     // AAN includes a factor of 3.923 on top of that, so +2 bits       
     parameter CW = DW + 5,          // = 13
-    parameter M_BITS = 12,          // Bit size of Multiplier coefficients a1,2,3,4,5 - 8 or 12 only
+    parameter M_BITS = 12,          // Bit size of Multiplier coefficients a1,2,3,4,5 - 8 or 12 only - FIXME! a4 needs 13 bits !?!?!
     parameter MW = CW + M_BITS      // Multiplier width = 25
 )(
     input   logic signed[DW-1:0]    di[7:0], 
@@ -63,11 +63,11 @@ a5:    Binary = 11000011111
        Shifts = [0, 1, 2, 3, 4, 9, 10], Total = 7
        y[8] = (x[8] << 0) + (x[8] << 1) + (x[8] << 2) + (x[8] << 3) + (x[8] << 4) + (x[8] << 9) + (x[8] << 10);
 */
-parameter signed[M_BITS:0] a1 = 2896;
-parameter signed[M_BITS:0] a2 = 2217;
-parameter signed[M_BITS:0] a3 = 2896;
-parameter signed[M_BITS:0] a4 = 5352;
-parameter signed[M_BITS:0] a5 = 1567;
+parameter signed[M_BITS+1:0] a1 = 2896;
+parameter signed[M_BITS+1:0] a2 = 2217;
+parameter signed[M_BITS+1:0] a3 = a1;
+parameter signed[M_BITS+1:0] a4 = 5352;
+parameter signed[M_BITS+1:0] a5 = 1567;
 //------------------------------------------------------------------------------
 // pipeline control
 //------------------------------------------------------------------------------
