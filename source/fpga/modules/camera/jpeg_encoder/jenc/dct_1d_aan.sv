@@ -9,11 +9,14 @@
 `include "jpeg_encoder.vh"
 module dct_1d_aan #(
     parameter DW = 8,
-    // Regular 1-D DCT adds +3 bits to coefficients, but 
-    // AAN includes a factor of 3.923 on top of that, so +2 bits       
-    parameter CW = DW + 5,          // = 13
-    parameter M_BITS = 12,          // Bit size of Multiplier coefficients a1,2,3,4,5 - 8 or 12 only - FIXME! a4 needs 13 bits !?!?!
-    parameter MW = CW + M_BITS      // Multiplier width = 25
+    // Regular 1-D DCT includes a factor of sqrt(8) = 2.828. 
+    // AAN includes a factor of 1/((cos(PI/16)/2)/(-a5 + a4 + 1)) = 1/0.254898 = 3.923.
+    // Combined factor for 1-D DCT = 11.096, add +4 bits to DW
+    // Combined factor for 2-D DCT = 123.128, add +7 bits to DW, or (7 - 4) = +3 bits to 1st DCT output
+    // 1st DCT: DW = 8, CW = 12
+    // 2nd DCT: DW = 12, CW = 15
+    parameter CW = 12,
+    parameter M_BITS = 12           // Precision of FP multiplier factors a1,2,3,4,5. a4 needs 13 bits, because a4 > 1
 )(
     input   logic signed[DW-1:0]    di[7:0], 
     input   logic                   di_valid,
@@ -27,9 +30,8 @@ module dct_1d_aan #(
     input   logic                   resetn
 );
 
-always_comb assert (CW >= DW + 5) else $error();
+always_comb assert ((DW == 8 && CW == 12) || (DW == 12 && CW == 15)) else $error();
 always_comb assert (M_BITS == 12) else $error();
-always_comb assert (MW >= CW + M_BITS) else $error();
 
 //------------------------------------------------------------------------------
 // Multplication constants
@@ -63,6 +65,7 @@ a5:    Binary = 11000011111
        Shifts = [0, 1, 2, 3, 4, 9, 10], Total = 7
        y[8] = (x[8] << 0) + (x[8] << 1) + (x[8] << 2) + (x[8] << 3) + (x[8] << 4) + (x[8] << 9) + (x[8] << 10);
 */
+parameter MW = CW + M_BITS + 2;     // 26 or 29 (+1 bit for sign extension, +1 bit for a4 >= 1)
 parameter signed[M_BITS+1:0] a1 = 2896;
 parameter signed[M_BITS+1:0] a2 = 2217;
 parameter signed[M_BITS+1:0] a3 = a1;

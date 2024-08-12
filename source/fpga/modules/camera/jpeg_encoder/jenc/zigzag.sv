@@ -7,9 +7,9 @@
  */
 `include "zigzag.vh"
 module zigzag  #(
-    parameter QW = 15 // 1st pass 13, 2nd pass 15
+    parameter QW = 15 // 1st pass 12, 2nd pass 15
 )(
-    input logic[QW-1:0]     d[7:0],
+    input logic signed[QW-1:0] d[7:0],
     input logic[2:0]        d_cnt,
     input logic             d_valid,
     output logic            d_hold,
