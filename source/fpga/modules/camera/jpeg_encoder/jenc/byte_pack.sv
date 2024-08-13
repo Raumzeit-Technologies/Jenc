@@ -17,7 +17,6 @@ module byte_pack (
     output  logic                   out_tlast,
     output  logic                   out_valid,
     input   logic                   out_hold,
-    output  logic [19:0]            size,
 
     input   logic                   clk,
     input   logic                   resetn
@@ -83,15 +82,4 @@ bit_pack bit_pack_1 (
     .*
 );
 
-// Size reg logic
-logic tlast;
-always @(posedge clk)
-if (!resetn)
-    tlast <= 1;
-else if (out_valid & ~out_hold)
-    tlast <= out_tlast;
-
-always @(posedge clk)
-if (out_valid & ~out_hold)
-    size <= (tlast ? 0 : size) + 4;
 endmodule

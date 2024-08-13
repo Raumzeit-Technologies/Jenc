@@ -38,7 +38,7 @@ if (!resetn) begin
     long_in <= 0;
 end
 else if (~(in32_hold & in32_valid)) begin
-    in32_valid <= in_valid | long_in;
+    in32_valid <= in_valid;
     
     if (long_in)
         long_in <= 0;
@@ -118,6 +118,7 @@ if (!resetn) begin
     tlast_cycle <= 0;
     out_tlast <= 0;
     out_valid <= 0;
+    bit_packer <= 0;
 end
 else if (~(out_hold & out_valid)) begin   
     bit_count <= next_bit_count;
@@ -125,13 +126,13 @@ else if (~(out_hold & out_valid)) begin
 
     out_tlast <= next_tlast_cycle & next_bit_count <= 32;
     out_valid <= (next_tlast_cycle & next_bit_count <= 32) | next_bit_count >= 32; //always_comb out_valid = out_tlast | bit_count >= 32;
+
+    bit_packer <= next_bit_packer;
 end
 
 always @(posedge clk)
-if (~(out_hold & out_valid)) begin
-    bit_packer <= next_bit_packer;
+if (~(out_hold & out_valid))
     out_nbytes <= (next_tlast_cycle & next_bit_count <= 32) ? (next_bit_count + 7) >> 3 : 4; // always_comb out_nbytes = out_tlast ? (bit_count + 7) >> 3 : 4;
-end
 
 always_comb in32_hold = (out_hold & out_valid) | (tlast_cycle & ~out_tlast);
 

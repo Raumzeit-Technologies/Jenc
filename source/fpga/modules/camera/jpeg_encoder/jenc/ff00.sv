@@ -22,6 +22,8 @@ module ff00 (
     input   logic                   resetn
 );
 
+always_comb if (resetn) assert (in_nbytes < 5) else $error();
+
 // 1.   Find 0xFF
 logic [3:0]             s_ff;
 logic [63:0]            mask, data_0, data_1, data_2, data_3;
@@ -32,6 +34,10 @@ always_comb
             s_ff[i] = in_data[8*i +: 8] == 8'hff;
         else
             s_ff[i] = 0;
+//always_comb s_ff[0] = &in_data[7:0] & in_nbytes > 3;
+//always_comb s_ff[1] = &in_data[15:8] & in_nbytes > 2;
+//always_comb s_ff[2] = &in_data[23:16] & in_nbytes > 1;
+//always_comb s_ff[3] = &in_data[31:24] & in_nbytes > 0;
 
 // 2.   insert 0x00
 always_comb mask = '1 << 32;
@@ -55,45 +61,4 @@ end
 
 always_comb in_hold = (out_hold & out_valid);
 
-
-/*
-logic [63:0]            s_data;
-logic                   s_valid;
-
-logic [3:0]             s_ff;
-logic [63:0]            s_mask;
-
-always @(posedge clk)
-if (!resetn) begin
-    s_valid <= 0;
-end
-else if (~(out_hold & out_valid)) begin
-    if (s_ff == 0);
-        s_valid <= in_valid;
-end
-
-always @(posedge clk)
-if (~(out_hold & out_valid)) begin
-    // unroll i (open source simulators dont simulate correctly)
-    integer i;
-    i = s_ff[0] ? 0 : s_ff[1] ? 1 : s_ff[2] ? 2 : 3;
-    if (s_ff != 0) begin
-        if (i >= 1)
-            s_data <= (s_data & (64'hffffffff00000000 << 8*i)) | ((s_data & ~(64'hffffffff00000000 << 8*i)) >> 8);
-        out_bytes <= out_bytes + 1;
-        s_ff[i] <= 0;
-    end
-    else if (in_valid & ~in_hold) begin
-        s_data <= {in_data, 32'h0};
-        out_bytes <= in_bytes;
-        out_tlast <= in_tlast;
-        for (int i=0; i <= 3; i++)
-            if (3 - i < in_bytes)
-                s_ff[i] <= in_data[8*i +: 8] == 8'hff;
-    end 
-end
-
-always_comb out_valid = s_valid & s_ff==0;
-always_comb in_hold = (out_hold & out_valid) | s_ff!=0;
-*/
 endmodule
