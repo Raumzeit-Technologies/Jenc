@@ -1,0 +1,3 @@
+[submodule "rz-lib"]
+	path = rz-lib
+	url = https://github.com/raumzeitt/rz-lib.git
