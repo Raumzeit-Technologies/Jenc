@@ -1,7 +1,7 @@
 /*
  * MCU buffer for 4:2:0 (4:4:4, 4:2:2, 4:0:0 can be added easily)
  *
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *
  * CERN Open Hardware Licence Version 2 - Permissive
  *
@@ -57,7 +57,9 @@ logic[$clog2(6)-1:0]        mcu_count, mcu_count_0;
 logic[2:0]                  mcu_line_count; // 8 bytes at a time
 logic[(8*DW)-1:0]           rd_y, rd_uv;
 
-always_comb yuvrgb_in_hold = full;
+// FIFO logic
+logic[1:0] wptr, rptr;
+logic full, empty;
 
 afifo #(.ASIZE(1)) afifo(
     .i_wclk(clk),

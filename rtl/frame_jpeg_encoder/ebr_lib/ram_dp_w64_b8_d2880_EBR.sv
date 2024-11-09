@@ -1,5 +1,5 @@
 /*
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *
  * CERN Open Hardware Licence Version 2 - Permissive
  *
@@ -32,7 +32,7 @@ module ram_dp_w64_b8_d2880_EBR (wr_clk_i,
     parameter MEM_ID = "ram_dp_w64_b8_d2880_EBR" ; 
 
 parameter W = 2; // = 64/32
-parameter D = 6; // = ceil(2880/512) = 6
+parameter D = 6; // = ceil(2880/512) = 6 -> 12 vs 8 = -4
 
 logic [63:0] rd_data[D-1:0]; 
 logic [63:0] rd_data_z[D-1:0]; 
