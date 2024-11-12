@@ -123,16 +123,6 @@ psync1 psync_start_capture_1 (
     .out(start_capture_1), .out_clk(jpeg_clock), .out_reset_n(jpeg_reset_n)
 );
 
-psync1 psync_frame_start (
-    .in             (jstate==WAIT_FOR_FRAME_START & frame_valid), 
-    .in_clk         (pixel_clock_in), 
-    .in_reset_n     (pixel_reset_n_in & jpeg_reset_n), 
-    .out            (frame_start), 
-    .out_clk        (slow_clock), 
-    .out_reset_n    (slow_reset_n)
-);
-
-
 // JPEG ISP (RGB2YUV, 4:4:4 2 4:2:0, 16-line MCU buffer)
 jisp #(
     .SENSOR_X_SIZE      (SENSOR_X_SIZE),
