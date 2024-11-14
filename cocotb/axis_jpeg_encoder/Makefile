@@ -14,7 +14,7 @@ export SIM := $(SIM)
 TOPLEVEL_LANG ?= verilog
 
 
-# inlude source file list
+# VERILOG_SOURCES and VERILOG_INCLUDE_DIRS are defined in the inlude source file list 
 include $(realpath ./source_files.mk)
 
 # compile flags
