@@ -48,7 +48,7 @@ always @(posedge clk)
 if (!resetn)
     video_state <= VBLANK_IDLE;
 else if (s_axis_video_tvalid & s_axis_video_tready)
-    case (video_state):
+    case (video_state)
     VBLANK_IDLE: 
         if (s_axis_video_tuser) begin
             video_state <= ACTIVE;
@@ -59,7 +59,7 @@ else if (s_axis_video_tvalid & s_axis_video_tready)
             line_count <= line_count + 1;
             if (line_count == y_size_m1)
                 video_state <= VBLANK_IDLE;
-            else begin
+            else
                 video_state <= HBLANK_1ST;
         end
     HBLANK_1ST: 

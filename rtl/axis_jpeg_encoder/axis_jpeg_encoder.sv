@@ -65,6 +65,7 @@ logic [2:0]             di_cnt;
 
 // JPEG FSM
 enum logic[2:0] {IDLE, RESET, WAIT_FOR_FRAME_START, COMPRESS, IMAGE_VALID} jstate;
+logic                   jpeg_en;
 logic                   compress_2_image_valid;
 
 // data out
@@ -87,13 +88,16 @@ jaxis_video_slave #(
     .SENSOR_X_SIZE(SENSOR_X_SIZE), 
     .SENSOR_Y_SIZE(SENSOR_Y_SIZE)
 ) jaxis_video_slave (
+    .clk                (pixel_clock),
+    .resetn             (pixel_reset_n),
+    .rgb24_hold         (jpeg_en & rgb24_hold),
     .*
 );
 
 // JPEG FSM
 // To do: put into separate glue logic module
-always @(posedge pixel_clock_in)
-if (!pixel_reset_n_in)
+always @(posedge pixel_clock)
+if (!pixel_reset_n)
     jstate <= IDLE;
 else 
     case(jstate)
@@ -114,7 +118,7 @@ psync1 psync_start_capture_0 (
 );
 
 psync1 psync_fsm (
-    .in(out_valid & ~out_hold & out_tlast), .in_clk(jpeg_clock), .in_reset_n(jpeg_reset_n), 
+    .in(m_axis_video_tvalid & m_axis_video_tready & m_axis_video_tlast), .in_clk(jpeg_clock), .in_reset_n(jpeg_reset_n), 
     .out(compress_2_image_valid), .out_clk(pixel_clock), .out_reset_n(pixel_reset_n)
 );
 
@@ -130,9 +134,11 @@ jisp #(
 ) jisp (
     .clk                (pixel_clock),
     .resetn             (pixel_reset_n),
-    .rgb24_valid        (jpeg_en & line_valid_in),
-    .frame_valid_in     (jpeg_en & frame_valid_in),
-    .line_valid_in      (jpeg_en & line_valid_in),
+    .rgb24_valid        (jpeg_en & rgb24_valid),
+    .frame_valid_in     (frame_valid),
+    .line_valid_in      (line_valid),
+    .slow_clock         (jpeg_clock),
+    .slow_reset_n       (jpeg_reset_n),
     .*
 );
 
@@ -143,7 +149,9 @@ jenc #(
 ) jenc (
     .clk                (jpeg_clock),
     .resetn             (jpeg_reset_n),
-    
+    .clk_x22            (jpeg_fast_clock),
+    .resetn_x22         (jpeg_fast_reset_n),
+
     .out_valid          (m_axis_video_tvalid),
     .out_hold           (m_axis_video_tready),
     .out_tlast          (m_axis_video_tlast),

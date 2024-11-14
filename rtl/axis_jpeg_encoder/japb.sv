@@ -31,7 +31,7 @@
     input   logic [31:0]        pwdata,                 // 4 bytes 
     output  logic [31:0]        prdata,                 // 4 bytes 
     input   logic               pclk,                   // APB clock
-    input   logic               presetn,
+    input   logic               presetn
 );
 
 // register addresses
