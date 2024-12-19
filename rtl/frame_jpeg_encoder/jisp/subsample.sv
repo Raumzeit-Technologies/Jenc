@@ -1,9 +1,9 @@
 /*
  * Subsample 4:4:4 to 4:2:0 (4:4:4, 4:2:2, 4:0:0 can be added easily)
  *
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *
- * CERN Open Hardware Licence Version 2 - Permissive
+ * GPL-3.0 license
  *
  * Copyright (C) 2024 Robert Metchev
  */

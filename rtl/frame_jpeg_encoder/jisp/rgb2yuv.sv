@@ -1,9 +1,9 @@
 /*
  * RGB to Y Cb Cr conversion
  *
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *
- * CERN Open Hardware Licence Version 2 - Permissive
+ * GPL-3.0 license
  *
  * Copyright (C) 2024 Robert Metchev
  */
