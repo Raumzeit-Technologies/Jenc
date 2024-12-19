@@ -1,7 +1,7 @@
 /*
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *
- * CERN Open Hardware Licence Version 2 - Permissive
+ * GPL-3.0 license
  *
  * Copyright (C) 2024 Robert Metchev
  */
@@ -29,7 +29,7 @@ module quant #(
 
     input   logic[$clog2(SENSOR_X_SIZE)-1:0] x_size_m1,
     input   logic[$clog2(SENSOR_Y_SIZE)-1:0] y_size_m1,
-    input   logic[1:0]              qf_select,          // select one of the 4 possible QF
+    input   logic[2:0]              qf_select,          // select one of the 8 possible QF
 
     input   logic                   clk,
     input   logic                   resetn

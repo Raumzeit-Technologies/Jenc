@@ -1,10 +1,10 @@
 /*
  * Top level for JPEG Encoder related ISP
  *
- * Authored by: Robert Metchev / Chips & Scripts (rmetchev@ieee.org)
+ * Authored by: Robert Metchev / Raumzeit Technologies (robert@raumzeit.co)
  *  for Brilliant Labs
  *
- * CERN Open Hardware Licence Version 2 - Permissive
+ * GPL-3.0 license
  *
  * Copyright (C) 2024 Robert Metchev
  */
